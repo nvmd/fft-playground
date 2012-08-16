@@ -69,4 +69,6 @@ struct fftw_fft_3d_t
 	typedef fftw_fft_3d_base_t<FFTW_FORWARD,FFTW_BACKWARD,F> type;
 };
 
+typedef fftw_fft_3d_t<complex_mesh3d_t>::type complex_fft_3d_fftw_t;
+
 #endif	// _FFT_FFTW_HPP_

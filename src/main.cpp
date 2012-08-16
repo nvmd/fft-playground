@@ -47,11 +47,12 @@ int main(int argc, char **argv)
 	write_mesh3d(output, mesh);
 
 	output << "\nforward: \n";
-	fftw_fft_3d_t<complex_mesh3d_t>::type fft(mesh);
+	complex_fft_3d_fftw_t fft(mesh);
 	fft();
 	write_mesh3d(output, mesh);
 
-	fftw_fft_3d_t<complex_mesh3d_t>::type::inverse fft_inv(mesh);
+	output << "\ninverse: \n";
+	complex_fft_3d_fftw_t::inverse fft_inv(mesh);
 	fft_inv();
 	write_mesh3d(output, mesh);
 
