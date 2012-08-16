@@ -2,12 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace math_constants
-{
-const double pi = 3.141592653589793238462643383279502884197;
-const double two_pi = 6.283185307179586476925286766559005768394;
-}
-
+#include "math_base.hpp"
 #define M_PI math_constants::pi
 
 struct dft_reference_t
@@ -55,70 +50,6 @@ private:
 		return sum_factor * sum;
 	}
 };
-
-template <class Input, class OutputIterator>
-void read_data(Input &input, size_t size, OutputIterator out)
-{
-	while (size--)
-	{
-		input >> *out++;
-	}
-}
-
-template <class Input, class OutputIterator>
-void write_data(Input &input, size_t size, OutputIterator out)
-{
-	while (size--)
-	{
-		input << *out++;
-	}
-}
-
-template <class InputIterator>
-void write_data(std::ostream &input, size_t size, InputIterator out)
-{
-	while (size--)
-	{
-		input << *out++ << " ";
-	}
-}
-
-//int main(int argc, char **argv)
-int foo(int argc, char **argv)
-{
-	//std::ifstream input("in.txt");
-	//std::ofstream output("out.txt");
-	std::istream &input = std::cin;
-	std::ostream &output = std::cout;
-	
-	size_t size = 0;
-	input >> size;
-
-	std::complex<double> *data_in = new std::complex<double>[size];
-	std::complex<double> *data_dft_fwd = new std::complex<double>[size];
-	std::complex<double> *data_dft_bwd = new std::complex<double>[size];
-	read_data(input, size, data_in);
-	
-	output << "Data: ";
-	write_data(output, size, data_in);
-	output << std::endl;
-
-	dft_reference_t dft;
-	dft.forward(data_in, data_dft_fwd, size);
-	output << "Forward: ";
-	write_data(output, size, data_dft_fwd);
-	output << std::endl;
-
-	output << "Backward: ";
-	dft.backward(data_dft_fwd, data_dft_bwd, size);
-	write_data(output, size, data_dft_bwd);
-
-	delete[] data_dft_bwd;
-	delete[] data_dft_fwd;
-	delete[] data_in;
-	return 0;
-}
-
 
 #include <algorithm>
 #include <cstdio>
@@ -209,10 +140,4 @@ int fft_hbr_start() {
 	printf("%e %e\n", as2[i].real(), as2[i].imag());
 
     return 0;
-}
-
-int main(int argc, char **argv)
-{
-	//return fft_hbr_start();
-	return foo(argc, argv);
 }

@@ -1,0 +1,59 @@
+
+#include <iostream>
+#include "fft_fftw.hpp"
+#include "mesh_3d.hpp"
+
+template <class Input, class OutputIterator>
+void read_data(Input &input, size_t size, OutputIterator out)
+{
+	while (size--)
+	{
+		input >> *out++;
+	}
+}
+
+template <class Output, class OutputIterator>
+void write_data(Output &output, size_t size, OutputIterator out)
+{
+	while (size--)
+	{
+		output << *out++;
+	}
+}
+
+template <class InputIterator>
+void write_data(std::ostream &output, size_t size, InputIterator out)
+{
+	while (size--)
+	{
+		output << *out++ << " ";
+	}
+}
+
+int main(int argc, char **argv)
+{
+	//std::ifstream input("in.txt");
+	//std::ofstream output("out.txt");
+	std::istream &input = std::cin;
+	std::ostream &output = std::cout;
+	
+	natural0_vector3d_t size;
+	input >> size.x >> size.y >> size.z;
+
+	complex_mesh3d_t mesh(size);
+	read_mesh3d(input, mesh);
+	
+	output << "\ndata: \n";
+	write_mesh3d(output, mesh);
+
+	output << "\nforward: \n";
+	fftw_fft_3d_t<complex_mesh3d_t>::type fft(mesh);
+	fft();
+	write_mesh3d(output, mesh);
+
+	fftw_fft_3d_t<complex_mesh3d_t>::type::inverse fft_inv(mesh);
+	fft_inv();
+	write_mesh3d(output, mesh);
+
+	return 0;
+}
